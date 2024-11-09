@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "726981428339",
+    "project_id": "chatters-80b01",
+    "storage_bucket": "chatters-80b01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726981428339:android:2848bfe93f0f77334d9606",
+        "android_client_info": {
+          "package_name": "com.chatters"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJMtEwImiSRtqf_g0XqnUSZzoNuU68RLM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
