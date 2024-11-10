@@ -62,11 +62,11 @@ const SearchNoteItem = React.memo(({ item, searchText }) => {
 
     return <View style={style.itemCardParent}>
         <View style={{ width: "100%", flexDirection: "row" }}>
-            <Text style={style.title} numberOfLines={1} >{item.title || "Untitled"}</Text>
+            <Text style={[style.title, { color: !item.title && "grey" }]} numberOfLines={1} >{item.title || "Untitled"}</Text>
             <Text style={style.date}>{formatedDate}</Text>
         </View>
 
-        <Text style={style.description} numberOfLines={1} ellipsizeMode="tail">{GetFilterContent}</Text>
+        <Text style={[style.description, { color: !item.content && "grey" }]} numberOfLines={1} ellipsizeMode="tail">{item.content ? GetFilterContent : "Description not available"}</Text>
 
 
     </View>
@@ -89,7 +89,7 @@ const style = StyleSheet.create({
 
     },
     description: {
-        marginHorizontal: 15,
+        paddingHorizontal: 10,
         backgroundColor: "transparent",
         flex: 1,
         fontWeight: "400",

@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { actions, RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 import { useFocusEffect } from '@react-navigation/native';
 import { RichText, Toolbar, useBridgeState, useEditorBridge } from "@10play/tentap-editor";
+import { convert } from "html-to-text";
 
 
 
@@ -30,7 +31,13 @@ const Create = ({ navigation, route }) => {
         if (!editorState.isReady) {
             return
         }
-        const currentState = { ...state, content: await editor.getHTML() }
+
+        let htmlContent = await editor.getHTML()
+        if(!convert(htmlContent)){
+            htmlContent = null
+        }
+
+        const currentState = { ...state, content: htmlContent }
         if (currentState._id) {
             updateNote(currentState)
 

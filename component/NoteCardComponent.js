@@ -44,12 +44,17 @@ const RenderNoteItem = React.memo(({ item }) => {
 
     return <View style={style.itemCardParent}>
         <View style={{ width: "100%", flexDirection: "row" }}>
-            <Text style={style.title} numberOfLines={1} >{item.title || "Untitled"}</Text>
+            <Text style={[style.title, { color: !item.title && "grey" }]} numberOfLines={1} >{item.title || "Untitled"}</Text>
             <Text style={style.date}>{formatedDate()}</Text>
         </View>
 
         <View style={{ height: richTextHeight, overflow: 'hidden' }}>
-            <RichText editor={editor} style={style.description} onLayout={handleLayout} />
+
+            {item?.content ?
+                <RichText editor={editor} style={style.description} onLayout={handleLayout} /> :
+                <Text style={{ margin: 10, color: "grey" }}>Description not available</Text>
+            }
+
 
         </View>
 
