@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { FlatList, StyleSheet, Text, TextInput, View } from "react-native"
 import Icon from "react-native-vector-icons/Fontisto"
 import { getNoteListBySearch } from "../../local/Database"
-import { retry } from "@reduxjs/toolkit/query"
 import { TouchableOpacity } from "react-native"
 import RenderNoteItem from "../../component/NoteCardComponent"
+import { useFocusEffect } from '@react-navigation/native';
+import SearchNoteItem from "../../component/SearchCardComponent"
 
 const Search = ({navigation}) => {
 
-
-  
   const [search, setSearch] = useState(null)
   const [searchResult, setSearchResult] = useState([])
-
+  const searchFieldRef = useRef()
   useEffect(() => {
     if (!search) {
       setSearchResult([])
@@ -23,13 +22,24 @@ const Search = ({navigation}) => {
   }, [search])
 
   
+  useFocusEffect(
+    React.useCallback(() => {
+
+      searchFieldRef?.current?.focus()
+        return () => {
+          searchFieldRef?.current?.blur();
+        };
+    }, [])
+);
+
   const FooterComponent = () => (
     <View style={{ height: 10 }}></View>
-)
+  )
   return (
     <View style={style.parentContainer}>
       <View style={style.serachField}>
         <TextInput
+          ref={searchFieldRef}
           value={search}
           style={style.serachTextField}
           placeholder="Search your note"
@@ -45,8 +55,8 @@ const Search = ({navigation}) => {
         ListFooterComponent={FooterComponent}
         keyExtractor={(item) => item._id.toString()}
         renderItem={({ item }) =>
-          <TouchableOpacity onPress={() => { navigation.navigate("EditScreen", { data: item }) }}>
-            <RenderNoteItem item={item} />
+          <TouchableOpacity onPress={() => { navigation.replace("EditScreen", { id: item._id }) }}>
+            <SearchNoteItem item={item} searchText={search}/>
 
           </TouchableOpacity>
 

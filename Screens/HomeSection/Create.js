@@ -65,6 +65,7 @@ const Create = ({ navigation, route }) => {
         if (route?.params?.id && editorState.isReady) {
 
             const note = getNote(route?.params?.id)
+            console.log(note)
             setState(JSON.parse(JSON.stringify(note)))
             editor.setContent(note?.content)
         }

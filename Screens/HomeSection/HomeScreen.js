@@ -27,15 +27,16 @@ const HomeComponent = () => {
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
+          headerShown: false
         }}
       />
       <BottomTab.Screen
-        name='Search'
+        name='Folder'
         component={Search}
         options={{
-          tabBarLabel: 'Search',
+          tabBarLabel: 'Folder',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={26} />
+            <MaterialCommunityIcons name="folder" color={color} size={26} />
           ),
           headerShown: false
 
@@ -49,6 +50,7 @@ const HomeComponent = () => {
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="pencil" color={color} size={26} />
           ),
+          
           headerShown: false
         }}
       />

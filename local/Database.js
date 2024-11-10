@@ -85,5 +85,12 @@ export function getNoteListBySearch(txt){
   return realm.filtered(`title CONTAINS[c] "${txt}" OR content CONTAINS[c] "${txt}"`);
 }
 
+export function deleteNotes(arrOfNotes){
+
+  arrOfNotes.forEach(element => {
+    deleteNote(element)
+  });
+}
+
 
 export default GetConnection

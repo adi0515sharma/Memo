@@ -1,18 +1,41 @@
-import { PlaceholderBridge, RichText, useBridgeState, useEditorBridge, useEditorContent } from "@10play/tentap-editor";
-import React, { createRef, useEffect, useMemo, useRef, useState } from "react";
+import React, { createRef, useEffect, useMemo, useState } from "react";
 import { Dimensions, View, Rich, StyleSheet, Text, ScrollView } from "react-native";
-const RenderNoteItem = React.memo(({ item }) => {
-    const editor = useEditorBridge({ editable: false, dynamicHeight: true });
-    const editorState = useBridgeState(editor)
-    const [richTextHeight, setRichTextHeight] = useState("auto")
-
-    useEffect(() => {
-
-        editor.setContent(item?.content)
-    }, [editorState.isReady, item])
+import { convert } from 'html-to-text';
 
 
-    const formatedDate = () => {
+const SearchNoteItem = React.memo(({ item, searchText }) => {
+
+
+    const GetFilterContent = useMemo(() => {
+
+        if (!searchText) {
+            return ""
+        }
+        let txt = null
+
+        if (item?.content) {
+            txt = convert(item?.content)
+            const lines = txt?.split('\n');
+            const searchResult = lines?.find(line => line.toLowerCase().includes(searchText.toLowerCase()))
+            if (!searchResult) {
+                return txt
+            }
+
+            txt = searchResult
+        }
+
+        const insideMatch = new RegExp(`\\S*${searchText}\\S*`, 'i');
+        const insideMatchResult = txt?.match(insideMatch);
+        if (insideMatchResult) {
+            txt = `... ${insideMatchResult[0]} ...`;
+            return txt
+        }
+
+        return txt || ""
+
+    }, [searchText])
+
+    const formatedDate =useMemo(() => {
 
         const lastUpdatedAt = new Date(item.lastUpdatedAt);
 
@@ -31,33 +54,25 @@ const RenderNoteItem = React.memo(({ item }) => {
         const formattedDate = new Intl.DateTimeFormat('en-US', options).format(date);
         const result = formattedDate.toString()
         return result
-    }
+    },[item])
 
 
-    const handleLayout = (event) => {
-        const { height } = event.nativeEvent.layout;
-        const newHeight = height < 100 ? "auto" : 100
-        setRichTextHeight(newHeight)
-    };
 
 
 
     return <View style={style.itemCardParent}>
         <View style={{ width: "100%", flexDirection: "row" }}>
             <Text style={style.title} numberOfLines={1} >{item.title || "Untitled"}</Text>
-            <Text style={style.date}>{formatedDate()}</Text>
+            <Text style={style.date}>{formatedDate}</Text>
         </View>
 
-        <View style={{ height: richTextHeight, overflow: 'hidden' }}>
-            <RichText editor={editor} style={style.description} onLayout={handleLayout} />
-
-        </View>
+        <Text style={style.description} numberOfLines={1} ellipsizeMode="tail">{GetFilterContent}</Text>
 
 
     </View>
 })
 
-export default RenderNoteItem;
+export default SearchNoteItem;
 
 const style = StyleSheet.create({
     parentContainer: {
@@ -76,7 +91,9 @@ const style = StyleSheet.create({
     description: {
         marginHorizontal: 15,
         backgroundColor: "transparent",
-        flex: 1
+        flex: 1,
+        fontWeight: "400",
+        marginTop: 10,
     },
     date: {
         paddingHorizontal: 10,

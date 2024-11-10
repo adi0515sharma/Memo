@@ -8,6 +8,7 @@ import HomeComponent from './Screens/HomeSection/HomeScreen';
 import auth from '@react-native-firebase/auth';
 import GetConnection from './local/Database';
 import Create from './Screens/HomeSection/Create';
+import Search from './Screens/HomeSection/Search';
 
 
 const Stack = createNativeStackNavigator();
@@ -66,6 +67,7 @@ export default function App() {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="HomeScreen" component={HomeComponent}  options={{ headerShown: false }} />
         <Stack.Screen name="EditScreen" component={Create} options={{ headerShown: false }} />
+        <Stack.Screen name="SearchScreen" component={Search}  options={{ headerShown: false }} />
 
       </Stack.Navigator>
     </NavigationContainer>
